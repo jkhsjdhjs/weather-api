@@ -48,22 +48,22 @@ $query = $dbh->prepare(
         bmp180_pressure as pressure,
         row_number() OVER (ORDER BY created_at ASC) as n
       FROM weather
-      WHERE created_at BETWEEN $1 AND $2
+      WHERE created_at BETWEEN ? AND ?
     )
     SELECT
       percentile_disc(0.5) WITHIN GROUP (ORDER BY created_at) as time,
       AVG(temp) as temp,
-      stddev_samp(temp) as temp_stddev,
+      stddev_pop(temp) as temp_stddev,
       AVG(humidity) as humidity,
-      stddev_samp(humidity) as humidity_stddev,
+      stddev_pop(humidity) as humidity_stddev,
       AVG(pressure) as pressure,
-      stddev_samp(pressure) as pressure_stddev
+      stddev_poppressure) as pressure_stddev
     FROM f
-    GROUP BY ceil(n / floor((SELECT COUNT(*) FROM f) / ($3 - 1)))
+    GROUP BY ceil(n / floor((SELECT COUNT(*) FROM f) / (? - 1)))
     ORDER BY time ASC"
 );
 
-if(!$query->execute([$filtered->start, $filtered->end, $filtered->limit]))
+if(!$query->execute([$filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM), $filtered->limit]))
     exit_response(500, "database_error");
 
 $rows = [];
