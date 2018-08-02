@@ -27,7 +27,7 @@ if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
             $minLast = $matchesLast[5];
             $firstTimestamp = $yearFirst . "-" . $monthFirst . "-" . $dayFirst . " " . $hourFirst . ":" . $minFirst . ":59";
             $lastTimestamp = $yearLast . "-" . $monthLast . "-" . $dayLast . " " . $hourLast . ":" . $minLast . ":59";
-            $link = pg_connect(str_replace("pgsql:", "", $pgsql_dsn));
+            $link = pg_connect(str_replace(";", " ", str_replace("pgsql:", "", $pgsql_dsn)));
             if($link) {
                 $output = [ "error" => null ];
                 $result = pg_query($link, "SELECT * FROM weather WHERE created_at BETWEEN '$firstTimestamp' AND '$lastTimestamp'");

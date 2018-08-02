@@ -5,7 +5,7 @@ require_once "../config.php";
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 if($_GET['key'] === $api_key) {
-    $link = pg_connect(str_replace("pgsql:", "", $pgsql_dsn));
+    $link = pg_connect(str_replace(";", " ", str_replace("pgsql:", "", $pgsql_dsn)));
     if($link) {
         $result = pg_query($link, "SELECT * FROM weather ORDER BY id DESC LIMIT 1");
         $row = pg_fetch_object($result);
