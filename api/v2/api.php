@@ -1,6 +1,7 @@
 <?php
 
 function exit_response($code, $err_msg = null, $err_subject = null, $data = null) {
+    header("Access-Control-Allow-Origin: *");
     header("Content-type: application/json");
     http_response_code($code);
     $error = array_filter([
