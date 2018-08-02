@@ -12,26 +12,28 @@ if($_GET['key'] === $api_key) {
         $output = [
             "error" => "null",
             "ds1820" => [
-                "temp" => $row->ds1820_temp,
-                "unit" => "°C"
+                "temp" => [
+                    "value" => $row->ds1820_temp,
+                    "unit" => "°C"
+                ]
             ],
             "am2302" => [
                 "humidity" => [
-                    "hum" => $row->am2302_humidity,
+                    "value" => $row->am2302_humidity,
                     "unit" => "%"
                 ],
                 "temp" => [
-                    "temp" => $row->am2302_temp,
+                    "value" => $row->am2302_temp,
                     "unit" => "°C"
                 ]
             ],
             "bmp180" => [
                 "pressure" => [
-                    "pres" => $row->bmp180_pressure,
+                    "value" => $row->bmp180_pressure,
                     "unit" => "hPa"
                 ],
                 "temp" => [
-                    "temp" => $row->bmp180_temp,
+                    "value" => $row->bmp180_temp,
                     "unit" => "°C"
                 ]
             ],

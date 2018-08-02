@@ -29,35 +29,38 @@ if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
             $lastTimestamp = $yearLast . "-" . $monthLast . "-" . $dayLast . " " . $hourLast . ":" . $minLast . ":59";
             $link = pg_connect($pgsql_dsn);
             if($link) {
-                $output = [];
+                $output = [ "error" => null ];
                 $result = pg_query($link, "SELECT * FROM weather WHERE created_at BETWEEN '$firstTimestamp' AND '$lastTimestamp'");
                 if(pg_num_rows($result) != 0) {
                     while($row = pg_fetch_object($result)) {
                         $record = [
-                            "temp" => [
-                                "temp" => $row->temp_temp,
-                                "unit" => "°C"
+                            "ds1820" => [
+                                "temp" => [
+                                    "value" => $row->ds1820_temp,
+                                    "unit" => "°C"
+                                ]
                             ],
-                            "hum" => [
-                                "hum" => [
-                                    "hum" => $row->hum,
+                            "am2302" => [
+                                "humidity" => [
+                                    "value" => $row->am2302_humidity,
                                     "unit" => "%"
                                 ],
                                 "temp" => [
-                                    "temp" => $row->temp_hum,
+                                    "value" => $row->am2302_temp,
                                     "unit" => "°C"
                                 ]
                             ],
-                            "pres" => [
-                                "pres" => [
-                                    "pres" => $row->pres,
+                            "bmp180" => [
+                                "pressure" => [
+                                    "value" => $row->bmp180_pressure,
                                     "unit" => "hPa"
                                 ],
                                 "temp" => [
-                                    "temp" => $row->temp_pres,
+                                    "value" => $row->bmp180_temp,
                                     "unit" => "°C"
                                 ]
-                            ]
+                            ],
+                            "created_at" => $row->created_at
                         ];
                         array_push($output, $record);
                     }
