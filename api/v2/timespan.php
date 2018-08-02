@@ -4,7 +4,7 @@ require_once "../config.php";
 require_once "api.php";
 
 function validate_timestamp($ts) {
-    return DateTime::createFromFormat(DateTime::ATOM, $ts);
+    return new DateTime($ts);
 }
 
 if($_SERVER["REQUEST_METHOD"] !== "GET")
