@@ -57,9 +57,9 @@ $query = $dbh->prepare(
       AVG(humidity) as humidity,
       stddev_pop(humidity) as humidity_stddev,
       AVG(pressure) as pressure,
-      stddev_poppressure) as pressure_stddev
+      stddev_pop(pressure) as pressure_stddev
     FROM f
-    GROUP BY ceil(n / floor((SELECT COUNT(*) FROM f) / (? - 1)))
+    GROUP BY (n / ((SELECT COUNT(*) FROM f) / (? - 1)))
     ORDER BY time ASC"
 );
 
