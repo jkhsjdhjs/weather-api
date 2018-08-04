@@ -63,7 +63,7 @@ $query = $dbh->prepare(
     ORDER BY time ASC"
 );
 
-if(!$query->execute([$filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM), $filtered->limit]))
+if(!$query->execute([$filtered->start->format(DateTime::RFC2822), $filtered->end->format(DateTime::RFC2822), $filtered->limit]))
     exit_response(500, "database_error");
 
 $rows = [];
