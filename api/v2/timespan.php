@@ -39,29 +39,7 @@ $filtered = (object) $filtered;
 
 $dbh = db_conn($pgsql_dsn);
 
-$query = $dbh->prepare(
-    "WITH f AS (
-      SELECT
-        created_at,
-        ds1820_temp as temp,
-        am2302_humidity as humidity,
-        bmp180_pressure as pressure,
-        row_number() OVER (ORDER BY created_at ASC) as n
-      FROM weather
-      WHERE created_at BETWEEN ? AND ?
-    )
-    SELECT
-      percentile_disc(0.5) WITHIN GROUP (ORDER BY created_at) as time,
-      AVG(temp) as temp,
-      stddev_pop(temp) as temp_stddev,
-      AVG(humidity) as humidity,
-      stddev_pop(humidity) as humidity_stddev,
-      AVG(pressure) as pressure,
-      stddev_pop(pressure) as pressure_stddev
-    FROM f
-    GROUP BY floor(n / ceil((SELECT COUNT(*) FROM f) / (? - 1)))
-    ORDER BY time ASC"
-);
+$query = $dbh->prepare("SELECT weather_quantiles(?, ?, ?)");
 
 if(!$query->execute([$filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM), $filtered->limit]))
     exit_response(500, "database_error");
