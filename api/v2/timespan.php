@@ -59,7 +59,7 @@ $query = $dbh->prepare(
       AVG(pressure) as pressure,
       stddev_pop(pressure) as pressure_stddev
     FROM f
-    GROUP BY (n / ((SELECT COUNT(*) FROM f) / (? - 1)))
+    GROUP BY floor(n / ceil((SELECT COUNT(*) FROM f) / (? - 1)))
     ORDER BY time ASC"
 );
 
