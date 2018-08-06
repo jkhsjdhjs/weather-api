@@ -63,11 +63,13 @@ $query = $dbh->prepare(
     ORDER BY time ASC"
 );
 
-if(!$query->execute([$filtered->start->format(DateTime::W3C), $filtered->end->format(DateTime::W3C), $filtered->limit]))
+if(!$query->execute([$filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM), $filtered->limit]))
     exit_response(500, "database_error");
 
 $rows = [];
-while(($row = $query->fetch(PDO::FETCH_OBJ)) !== false)
+while(($row = $query->fetch(PDO::FETCH_OBJ)) !== false) {
+    $row->time = (new DateTime($row->time))->format(DateTime::W3C);
     $rows[] = $row;
+}
 
 exit_response(200, null, null, $rows);
