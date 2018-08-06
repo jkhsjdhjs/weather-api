@@ -31,17 +31,15 @@ $filtered = filter_input_array(INPUT_GET, $def);
 foreach($filtered as $key => $val) {
     if($val === false)
         exit_response(400, "invalid_field_value", $key);
-    if($val === null)
-        exit_response(400, "missing_field", $key);
 }
 
 $filtered = (object) $filtered;
 
 $dbh = db_conn($pgsql_dsn);
 
-$query = $dbh->prepare("SELECT weather_quantiles(?, ?, ?)");
+$query = $dbh->prepare("SELECT * FROM weather_quantiles(?, ?, ?)");
 
-if(!$query->execute([$filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM), $filtered->limit]))
+if(!$query->execute([$filtered->limit, $filtered->start->format(DateTime::ATOM), $filtered->end->format(DateTime::ATOM)]))
     exit_response(500, "database_error");
 
 $rows = [];
