@@ -27,7 +27,7 @@ if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
             $minLast = $matchesLast[5];
             $firstTimestamp = $yearFirst . "-" . $monthFirst . "-" . $dayFirst . " " . $hourFirst . ":" . $minFirst . ":59";
             $lastTimestamp = $yearLast . "-" . $monthLast . "-" . $dayLast . " " . $hourLast . ":" . $minLast . ":59";
-            $link = pg_connect(str_replace(";", " ", str_replace("pgsql:", "", $pgsql_dsn)));
+            $link = pg_connect(str_replace([";", "pgsql:"], [" "], $pgsql_dsn));
             if($link) {
                 $output = [ "error" => null ];
                 pg_query("SET search_path = weather_logging");
