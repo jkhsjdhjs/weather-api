@@ -31,7 +31,7 @@ if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
             if($link) {
                 $output = [ "error" => null ];
                 pg_query("SET search_path = weather_logging");
-                $result = pg_query($link, "SELECT * FROM weather WHERE created_at BETWEEN '$firstTimestamp' AND '$lastTimestamp'");
+                $result = pg_query_params("SELECT * FROM weather WHERE created_at BETWEEN $1 AND $2", [$firstTimestamp, $lastTimestamp]);
                 if(pg_num_rows($result) != 0) {
                     while($row = pg_fetch_object($result)) {
                         $record = [
