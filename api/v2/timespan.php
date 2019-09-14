@@ -10,7 +10,7 @@ function validate_timestamp($ts) {
 if($_SERVER["REQUEST_METHOD"] !== "GET")
     exit_response(405, "invalid_request_method");
 
-$def = [
+const VALIDATION = [
     "start" => [
         "filter" => FILTER_CALLBACK,
         "options" => "validate_timestamp"
@@ -26,7 +26,7 @@ $def = [
     ]
 ];
 
-$filtered = filter_input_array(INPUT_GET, $def);
+$filtered = filter_input_array(INPUT_GET, VALIDATION);
 
 foreach($filtered as $key => $val) {
     if($val === false)
