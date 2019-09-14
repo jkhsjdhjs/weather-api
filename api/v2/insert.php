@@ -6,7 +6,7 @@ require_once "api.php";
 if($_SERVER["REQUEST_METHOD"] !== "POST")
     exit_response(405, "invalid_request_method");
 
-if($_POST["secret"] !== $api_write_key)
+if($_POST["secret"] !== API_WRITE_KEY)
     exit_response(403, "invalid_secret");
 
 const VALIDATION = [
@@ -31,7 +31,7 @@ foreach($filtered as $key => $val) {
 
 $filtered = (object) $filtered;
 
-$dbh = db_conn($pgsql_dsn);
+$dbh = db_conn(PGSQL_DSN);
 $dbh->exec("SET search_path = weather_logging");
 
 $query = $dbh->prepare("INSERT INTO weather (ds1820_temp, am2302_temp, am2302_humidity, bmp180_temp, bmp180_pressure) VALUES (?, ?, ?, ?, ?)");

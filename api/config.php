@@ -1,5 +1,5 @@
 <?php
 
-$api_read_key = "";
-$api_write_key = "";
-$pgsql_dsn = "pgsql:user=home;dbname=home";
+CONST API_READ_KEY = "";
+const API_WRITE_KEY = "";
+const PGSQL_DSN = "pgsql:user=home;dbname=home";

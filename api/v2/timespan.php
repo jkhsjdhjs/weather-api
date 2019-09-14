@@ -35,7 +35,7 @@ foreach($filtered as $key => $val) {
 
 $filtered = (object) $filtered;
 
-$dbh = db_conn($pgsql_dsn);
+$dbh = db_conn(PGSQL_DSN);
 
 $query = $dbh->prepare("SELECT * FROM weather_quantiles(?, ?, ?)");
 

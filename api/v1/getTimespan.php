@@ -5,7 +5,7 @@ require_once "../config.php";
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
+if($_GET['key'] === API_READ_KEY && isset($_GET['first']) && isset($_GET['last'])) {
     $first = $_GET['first'];
     $last = $_GET['last'];
     if(preg_match("/(\d+)\/(\d+)\/(\d+)\/(\d+)\/(\d+)/", $first, $matchesFirst) && preg_match("/(\d+)\/(\d+)\/(\d+)\/(\d+)\/(\d+)/", $last, $matchesLast)) {
@@ -27,7 +27,7 @@ if($_GET['key'] === $api_key && isset($_GET['first']) && isset($_GET['last'])) {
             $minLast = $matchesLast[5];
             $firstTimestamp = $yearFirst . "-" . $monthFirst . "-" . $dayFirst . " " . $hourFirst . ":" . $minFirst . ":59";
             $lastTimestamp = $yearLast . "-" . $monthLast . "-" . $dayLast . " " . $hourLast . ":" . $minLast . ":59";
-            $link = pg_connect(str_replace([";", "pgsql:"], [" "], $pgsql_dsn));
+            $link = pg_connect(str_replace([";", "pgsql:"], [" "], PGSQL_DSN));
             if($link) {
                 $output = [ "error" => null ];
                 pg_query("SET search_path = weather_logging");
