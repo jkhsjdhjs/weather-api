@@ -11,7 +11,7 @@ if($_GET['key'] === API_READ_KEY) {
         $result = pg_query($link, "SELECT * FROM weather ORDER BY id DESC LIMIT 1");
         $row = pg_fetch_object($result);
         $output = [
-            "error" => "null",
+            "error" => null,
             "ds1820" => [
                 "temp" => [
                     "value" => $row->ds1820_temp,
